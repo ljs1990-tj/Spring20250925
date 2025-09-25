@@ -27,7 +27,7 @@
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
 		<div>
 			<input v-model="keyword" placeholder="검색어">
-			<button @click="fnList">검색</button>
+			<button @click="fnInfo">검색</button>
 		</div>
 		
     </div>
@@ -46,16 +46,29 @@
             // 함수(메소드) - (key : function())
             fnList: function () {
                 let self = this;
-                let param = {
-					keyword : self.keyword
-				};
+                let param = {};
                 $.ajax({
                     url: "stu-list.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-
+						console.log(data);
+                    }
+                });
+            },
+            fnInfo: function () {
+                let self = this;
+                let param = {
+					keyword : self.keyword
+				};
+                $.ajax({
+                    url: "stu-info.dox",
+                    dataType: "json",
+                    type: "POST",
+                    data: param,
+                    success: function (data) {
+						console.log(data);
                     }
                 });
             }
@@ -63,6 +76,7 @@
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
+            self.fnList();
         }
     });
 
