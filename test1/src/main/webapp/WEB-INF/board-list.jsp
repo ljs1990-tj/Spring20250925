@@ -60,6 +60,9 @@
                 </tr>
             </table>
         </div>
+        <div>
+            <a href="board-add.do"><button>글쓰기</button></a>
+        </div>
         
     </div>
 </body>

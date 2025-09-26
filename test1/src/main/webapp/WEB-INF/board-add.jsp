@@ -40,7 +40,7 @@
                 </tr>
             </table>
             <div>
-                <button>저장</button>
+                <button @click="fnAdd">저장</button>
             </div>
         </div>
     </div>
@@ -59,16 +59,21 @@
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnList: function () {
+            fnAdd : function () {
                 let self = this;
-                let param = {};
+                let param = {
+                    title : self.title,
+                    userId : self.userId,
+                    contents : self.contents
+                };
                 $.ajax({
-                    url: "",
+                    url: "board-add.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-
+                        alert("등록되었습니다.");
+                        location.href="board-list.do";
                     }
                 });
             }

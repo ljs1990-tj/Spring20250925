@@ -35,4 +35,15 @@ public class BoardService {
 		return resultMap;
 		
 	}
+	
+	public HashMap<String, Object> addBoard(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		int cnt = boardMapper.insertBoard(map);
+		
+		
+		resultMap.put("result", "success");
+		return resultMap;
+		
+	}
 }
