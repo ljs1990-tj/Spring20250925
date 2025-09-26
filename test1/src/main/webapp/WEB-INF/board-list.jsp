@@ -26,12 +26,28 @@
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
         <div>
+            <select v-model="kind" @change="fnList">
+                <option value="">:: 전체 ::</option>
+                <option value="1">:: 공지사항 ::</option>
+                <option value="2">:: 자유게시판 ::</option>
+                <option value="3">:: 문의게시판 ::</option>
+            </select>
+
+            <select v-model="order" @change="fnList">
+                <option value="num">:: 번호순 ::</option>
+                <option value="title">:: 제목순 ::</option>
+                <option value="cnt">:: 조회수 ::</option>
+            </select>
+
+        </div>
+        <div>
             <table>
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
                     <th>작성자</th>
                     <th>조회수</th>
+                    <th>작성일</th>
                     <th>삭제</th>
                 </tr>
                 <tr v-for="item in list">
@@ -39,6 +55,7 @@
                     <td>{{item.title}}</td>
                     <td>{{item.userId}}</td>
                     <td>{{item.cnt}}</td>
+                    <td>{{item.cdate}}</td>
                     <td><button @click="fnRemove(item.boardNo)">삭제</button></td>
                 </tr>
             </table>
@@ -53,14 +70,19 @@
         data() {
             return {
                 // 변수 - (key : value)
-                list : []
+                list : [],
+                kind : "",
+                order : "num"
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
             fnList: function () {
                 let self = this;
-                let param = {};
+                let param = {
+                    kind : self.kind,
+                    order : self.order
+                };
                 $.ajax({
                     url: "board-list.dox",
                     dataType: "json",
