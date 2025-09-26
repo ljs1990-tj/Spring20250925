@@ -13,6 +13,11 @@
 		SELECT *
 		FROM STUDENT
 	</select>
+	
+	<delete id="deleteStudent" parameterType="hashmap">
+		DELETE FROM STUDENT
+		WHERE STU_NO = #{stuNo}
+	</delete>
 </mapper>
 
 
