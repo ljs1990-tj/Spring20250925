@@ -32,12 +32,14 @@
                     <th>제목</th>
                     <th>작성자</th>
                     <th>조회수</th>
+                    <th>삭제</th>
                 </tr>
                 <tr v-for="item in list">
                     <td>{{item.boardNo}}</td>
                     <td>{{item.title}}</td>
                     <td>{{item.userId}}</td>
                     <td>{{item.cnt}}</td>
+                    <td><button @click="fnRemove(item.boardNo)">삭제</button></td>
                 </tr>
             </table>
         </div>
@@ -67,6 +69,22 @@
                     success: function (data) {
                         console.log(data);
                         self.list = data.list;
+                    }
+                });
+            },
+            fnRemove: function (boardNo) {
+                let self = this;
+                let param = {
+                    boardNo : boardNo
+                };
+                $.ajax({
+                    url: "board-delete.dox",
+                    dataType: "json",
+                    type: "POST",
+                    data: param,
+                    success: function (data) {
+                        alert("삭제되었습니다.");
+                        self.fnList();
                     }
                 });
             }
