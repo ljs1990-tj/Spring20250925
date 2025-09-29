@@ -28,20 +28,17 @@
             <table>
                 <tr>
                     <th>제목</th>
-                    <td><input v-model="title"></td>
+                    <td>{{info.title}}</td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td><input v-model="userId"></td>
+                    <td>{{info.userId}}</td>
                 </tr>
                 <tr>
                     <th>내용</th>
-                    <td><textarea v-model="contents" cols="50" rows="20"></textarea></td>
+                    <td>{{info.contents}}</td>
                 </tr>
             </table>
-            <div>
-                <button @click="fnAdd">저장</button>
-            </div>
         </div>
     </div>
 </body>
@@ -52,29 +49,25 @@
         data() {
             return {
                 // 변수 - (key : value)
-                title : "",
-                userId : "",
-                contents : "",
-                sessionId : "${sessionId}"
+                boardNo : "${boardNo}",
+                info : {}
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnAdd : function () {
+            fnInfo : function () {
                 let self = this;
                 let param = {
-                    title : self.title,
-                    userId : self.userId,
-                    contents : self.contents
+                    boardNo : self.boardNo
                 };
                 $.ajax({
-                    url: "board-add.dox",
+                    url: "board-view.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-                        alert("등록되었습니다.");
-                        location.href="board-list.do";
+                        console.log(data);
+                        self.info = data.info;
                     }
                 });
             }
@@ -82,10 +75,7 @@
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
-            if(self.sessionId == ""){
-                alert("로그인 후 이용해 주세요");
-                location.href="/member/login.do";
-            }
+            self.fnInfo();
         }
     });
 
