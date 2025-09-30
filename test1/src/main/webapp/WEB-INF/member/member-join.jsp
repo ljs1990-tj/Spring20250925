@@ -20,6 +20,9 @@
         tr:nth-child(even){
             background-color: azure;
         }
+        .phone {
+            width : 40px;
+        }
     </style>
 </head>
 <body>
@@ -33,7 +36,19 @@
             <label>비밀번호 : <input type="password" v-model="pwd"></label>
         </div>
         <div>
+            <label>비밀번호 확인 : <input type="password" v-model="pwd2"></label>
+        </div>
+        <div>
+            이름 : <input v-model="name">
+        </div>
+        <div>
             주소 : <input v-model="addr"> <button @click="fnAddr">주소검색</button>
+        </div>
+        <div>
+            핸드폰번호 : 
+            <input class="phone" v-model="phone1"> -
+            <input class="phone" v-model="phone2"> -
+            <input class="phone" v-model="phone3">
         </div>
         <div v-if="!joinFlg">
             문자인증 : <input v-model="inputNum" :placeholder="timer"> 
@@ -46,6 +61,20 @@
         </div>
         <div v-else style="color : red;">
             문자인증이 완료되었습니다.
+        </div>
+
+        <div>
+            성별 : 
+            <label><input type="radio" v-model="gender" value="M">남자 </label>
+            <label><input type="radio" v-model="gender" value="F">여자 </label>
+        </div>
+        <div>
+            가입 권한 : 
+            <select v-model="status">
+                <option value="A">관리자</option>
+                <option value="S">판매자</option>
+                <option value="C">소비자</option>
+            </select>
         </div>
         <div>
             <button @click="fnJoin">회원가입</button>
@@ -69,7 +98,15 @@
                 // 변수 - (key : value)
                 id : "",
                 pwd : "",
+                pwd2 : "",
                 addr : "",
+                name : "",
+                phone1 : "",
+                phone2 : "",
+                phone3 : "",
+                gender : "M",
+                status : "A",
+                
                 inputNum : "",
                 smsFlg : false,
                 timer : "",
