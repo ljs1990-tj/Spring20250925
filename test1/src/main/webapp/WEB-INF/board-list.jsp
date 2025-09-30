@@ -27,13 +27,13 @@
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
         <div>
-            <select>
-                <option>:: 전체 ::</option>
-                <option>:: 제목 ::</option>
-                <option>:: 작성자 ::</option>
+            <select v-model="searchOption">
+                <option value="all">:: 전체 ::</option>
+                <option value="title">:: 제목 ::</option>
+                <option value="id">:: 작성자 ::</option>
             </select>
             <input v-model="keyword">
-            <button>검색</button>
+            <button @click="fnList">검색</button>
 
         </div>
         <div>
@@ -92,6 +92,9 @@
                 list : [],
                 kind : "",
                 order : "num",
+                keyword : "", // 검색어
+                searchOption : "all", // 검색 옵션(기본 : 전체)
+
                 sessionId : "${sessionId}",
                 status : "${sessionStatus}"
             };
@@ -102,7 +105,9 @@
                 let self = this;
                 let param = {
                     kind : self.kind,
-                    order : self.order
+                    order : self.order,
+                    keyword : self.keyword,
+                    searchOption : self.searchOption
                 };
                 $.ajax({
                     url: "board-list.dox",
