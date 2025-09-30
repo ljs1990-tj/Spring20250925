@@ -14,6 +14,9 @@ public interface MemberMapper {
 	// 아이디 체크
 	Member memberCheck(HashMap<String, Object> map);
 	
+	// 가입
+	int memberAdd(HashMap<String, Object> map);
+	
 }
 
 

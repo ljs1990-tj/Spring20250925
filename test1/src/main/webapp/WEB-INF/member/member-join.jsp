@@ -29,7 +29,10 @@
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
          <div>
-            <label>아이디 : <input v-model="id"></label>
+            <label>아이디 : 
+                <input v-if="!checkFlg" v-model="id">
+                <input v-else v-model="id" disabled>
+            </label>
             <button @click="fnCheck">중복체크</button>
         </div>
         <div>
@@ -42,7 +45,7 @@
             이름 : <input v-model="name">
         </div>
         <div>
-            주소 : <input v-model="addr"> <button @click="fnAddr">주소검색</button>
+            주소 : <input v-model="addr" disabled> <button @click="fnAddr">주소검색</button>
         </div>
         <div>
             핸드폰번호 : 
@@ -106,7 +109,8 @@
                 phone3 : "",
                 gender : "M",
                 status : "A",
-                
+
+                checkFlg : false, // 중복체크 여부
                 inputNum : "",
                 smsFlg : false,
                 timer : "",
@@ -132,6 +136,7 @@
                             alert("이미 사용중인 아이디 입니다");
                         } else {
                             alert("사용 가능한 아이디 입니다");
+                            self.checkFlg = true;
                         }
                     }
                 });
@@ -188,12 +193,68 @@
             },
             fnJoin : function(){
                 let self = this;
-                // 문자 인증이 완료되지 않으면
-                // 회원가입 불가능(안내문구 출력)
-                if(!self.joinFlg){
-                    alert("문자 인증을 진행해주세요.");
+                if(!self.checkFlg){
+                    alert("아이디 중복체크 후 시도해주세요.");
                     return;
                 }
+                if(self.id.length < 5){
+                    alert("아이디는 5글자 이상 입니다.");
+                    return;
+                }
+                if(self.pwd.length < 6){
+                    alert("비밀번호는 6글자 이상 입니다.");
+                    return;
+                }
+                if(self.pwd != self.pwd2){
+                    alert("비밀번호는 다시 확인해주세요.");
+                    return;
+                }
+                if(self.name == ""){
+                    alert("이름을 입력해주세요.");
+                    return;
+                }
+
+                if(self.addr == ""){
+                    alert("주소를 입력해주세요.");
+                    return;
+                }
+                if(self.phone1 == "" || self.phone2 == "" || self.phone3 == ""){
+                    alert("핸드폰번호를 입력해주세요.");
+                    return;
+                }
+
+                // 문자 인증이 완료되지 않으면
+                // 회원가입 불가능(안내문구 출력)
+                // if(!self.joinFlg){
+                //     alert("문자 인증을 진행해주세요.");
+                //     return;
+                // }
+                let phone = self.phone1 + "-" + self.phone2 + "-" + self.phone3;
+                let param = {
+                    id : self.id,
+                    pwd : self.pwd,
+                    name : self.name,
+                    addr : self.addr,
+                    phone : phone,
+                    gender : self.gender,
+                    status : self.status
+                };
+
+                $.ajax({
+                    url: "/member/add.dox",
+                    dataType: "json",
+                    type: "POST",
+                    data: param,
+                    success: function (data) {
+                        if(data.result == "success"){
+                            alert("가입되었습니다!");
+                            location.href="/member/login.do";
+                        } else {
+                            alert("오류가 발생했습니다.");
+                            
+                        }
+                    }
+                });
 
             },
             fnSmsAuth : function(){
