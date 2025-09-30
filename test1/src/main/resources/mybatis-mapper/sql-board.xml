@@ -5,14 +5,21 @@
 <mapper namespace="com.example.test1.mapper.BoardMapper">
 	<select id="selectBoardList" parameterType="hashmap" resultType="com.example.test1.model.Board">
 		SELECT 
-			B.*, TO_CHAR(CDATETIME, 'YYYY-MM-DD') AS CDATE
+		    B.*, 
+		    TO_CHAR(CDATETIME, 'YYYY-MM-DD') AS CDATE, 
+		    NVL(CCNT, 0) AS COMMENTCNT
 		FROM TBL_BOARD B
+		LEFT JOIN (
+		    SELECT BOARDNO, COUNT(*) AS CCNT
+		    FROM TBL_COMMENT
+		    GROUP BY BOARDNO
+		) T ON T.BOARDNO = B.BOARDNO
 		WHERE 1=1
 		<if test="kind != '' and kind != null">
 			AND KIND = #{kind}
 		</if>
 		<if test="order == 'num'">
-			ORDER BY BOARDNO ASC
+			ORDER BY B.BOARDNO ASC
 		</if>
 		<if test="order == 'title'">
 			ORDER BY TITLE ASC

@@ -25,6 +25,8 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+        <div>이름 : {{info.stuName}}</div>
+        <div>평균점수 : {{info.enrAvg}}</div>
     </div>
 </body>
 </html>
@@ -34,20 +36,25 @@
         data() {
             return {
                 // 변수 - (key : value)
+                stuNo : "${stuNo}",
+                info : {}
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnList: function () {
+            fnView: function () {
                 let self = this;
-                let param = {};
+                let param = {
+                    stuNo : self.stuNo
+                };
                 $.ajax({
-                    url: "",
+                    url: "/stu-view.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
-
+                        console.log(data);
+                        self.info = data.info;
                     }
                 });
             }
@@ -55,6 +62,7 @@
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
+            self.fnView();
         }
     });
 
