@@ -35,20 +35,22 @@
         <div>
             주소 : <input v-model="addr"> <button @click="fnAddr">주소검색</button>
         </div>
-        <div>
+        <div v-if="!joinFlg">
             문자인증 : <input v-model="inputNum" :placeholder="timer"> 
             <template v-if="!smsFlg">
                 <button @click="fnSms">인증번호 전송</button>
             </template>
             <template v-else>
-                <button>인증</button>
+                <button @click="fnSmsAuth">인증</button>
             </template>
         </div>
-        <div>
-            {{timer}}
-            <button @click="fnTimer">시작!</button>
-
+        <div v-else style="color : red;">
+            문자인증이 완료되었습니다.
         </div>
+        <div>
+            <button @click="fnJoin">회원가입</button>
+        </div>
+        
     </div>
 </body>
 </html>
@@ -70,7 +72,10 @@
                 addr : "",
                 inputNum : "",
                 smsFlg : false,
-                timer : 180
+                timer : "",
+                count : 180,
+                joinFlg : false, // 문자 인증 유무
+                ranStr : "", // 문자 인증 번호
             };
         },
         methods: {
@@ -114,6 +119,7 @@
                         console.log(data);
                         if(data.res.statusCode == "2000"){
                             alert("문자 전송 완료");
+                            self.ranStr = data.ranStr;
                             self.smsFlg = true;
                             self.fnTimer();
 
@@ -127,14 +133,40 @@
             fnTimer : function(){
                 let self = this;
                 let interval = setInterval(function(){
-                    if(self.timer == 0){
+                    if(self.count == 0){
                         clearInterval(interval);
                         alert("시간이 만료되었습니다!");
                     } else {
-                        self.timer--;
+                        let min = parseInt(self.count / 60);
+                        let sec = self.count % 60;
+
+                        min = min < 10 ? "0" + min : min;
+                        sec = sec < 10 ? "0" + sec : sec;
+
+                        self.timer = min + " : " + sec;
+                        self.count--;
                     }
                     
                 },1000);
+            },
+            fnJoin : function(){
+                let self = this;
+                // 문자 인증이 완료되지 않으면
+                // 회원가입 불가능(안내문구 출력)
+                if(!self.joinFlg){
+                    alert("문자 인증을 진행해주세요.");
+                    return;
+                }
+
+            },
+            fnSmsAuth : function(){
+                let self = this;
+                if(self.ranStr == self.inputNum){
+                    alert("문자인증이 완료되었습니다.");
+                    self.joinFlg = true;
+                } else {
+                    alert("문자인증에 실패했습니다.");
+                }
             }
         }, // methods
         mounted() {
