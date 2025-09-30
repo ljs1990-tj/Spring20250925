@@ -2,6 +2,8 @@ package com.example.test1.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,12 @@ public class StuController {
     public String login(Model model) throws Exception{ 
 		
         return "/stu-list";
+    }
+	
+	@RequestMapping("/stu-view.do") 
+    public String view(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{ 
+		request.setAttribute("stuNo", map.get("stuNo"));
+        return "/stu-view";
     }
 	
 	@RequestMapping(value = "/stu-info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
