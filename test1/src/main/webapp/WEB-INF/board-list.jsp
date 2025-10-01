@@ -21,6 +21,14 @@
         tr:nth-child(even){
             background-color: azure;
         }
+        #index {
+            margin-right: 5px;
+            text-decoration: none;
+        }
+        .active {
+            color : black;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -37,6 +45,13 @@
 
         </div>
         <div>
+
+            <select v-model="pageSize" @change="fnList">
+                <option value="5">5개씩</option>
+                <option value="10">10개씩</option>
+                <option value="20">20개씩</option>
+            </select>
+
             <select v-model="kind" @change="fnList">
                 <option value="">:: 전체 ::</option>
                 <option value="1">:: 공지사항 ::</option>
@@ -76,6 +91,16 @@
                     </td>
                 </tr>
             </table>
+            <div>
+                <a v-if="page != 1 " @click="fnMove(-1)" href="javascript:;">◀</a>
+                <a @click="fnPage(num)" id="index" href="javascript:;" v-for="num in index">
+                    <span :class="{active : page == num}">{{num}}</span>
+
+               <!-- <span v-if="num == page" class="active">{{num}}</span>
+                    <span v-else>{{num}}</span> -->
+                </a>
+                <a v-if="page != index" @click="fnMove(1)" href="javascript:;">▶</a>
+            </div>
         </div>
         <div>
             <a href="board-add.do"><button>글쓰기</button></a>
@@ -96,6 +121,10 @@
                 keyword : "", // 검색어
                 searchOption : "all", // 검색 옵션(기본 : 전체)
 
+                pageSize : 5, // 한페이지에 출력할 개수
+                page : 1, // 현재 페이지
+                index : 0, // 최대 페이지 값
+
                 sessionId : "${sessionId}",
                 status : "${sessionStatus}"
             };
@@ -108,7 +137,10 @@
                     kind : self.kind,
                     order : self.order,
                     keyword : self.keyword,
-                    searchOption : self.searchOption
+                    searchOption : self.searchOption,
+
+                    pageSize : self.pageSize,
+                    page : (self.page-1) * self.pageSize
                 };
                 $.ajax({
                     url: "board-list.dox",
@@ -118,6 +150,7 @@
                     success: function (data) {
                         console.log(data);
                         self.list = data.list;
+                        self.index = Math.ceil(data.cnt / self.pageSize);
                     }
                 });
             },
@@ -139,6 +172,17 @@
             },
             fnView : function(boardNo){
                 pageChange("board-view.do", {boardNo : boardNo});
+            },
+            fnPage : function(num){
+                let self = this;
+                self.page = num;
+                self.fnList();
+
+            },
+            fnMove : function(num){
+                let self = this;
+                self.page += num;
+                self.fnList();
             }
         }, // methods
         mounted() {
