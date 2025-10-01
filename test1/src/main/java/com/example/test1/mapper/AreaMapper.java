@@ -9,5 +9,18 @@ import com.example.test1.model.Area;
 
 @Mapper
 public interface AreaMapper {
+	// 지역 전체 목록
 	List<Area> selectAreaList(HashMap<String, Object> map);
+	
+	// 지역 전체 개수
+	int selectAreaCnt(HashMap<String, Object> map);
+	
+	// 시/도 리스트
+	List<Area> selectSiList(HashMap<String, Object> map);
+	
+	
 }
+
+
+
+
