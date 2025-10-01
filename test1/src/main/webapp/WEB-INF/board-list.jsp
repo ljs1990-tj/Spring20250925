@@ -45,6 +45,7 @@
             </select>
 
             <select v-model="order" @change="fnList">
+                <option value="time">:: 시간순 ::</option>
                 <option value="num">:: 번호순 ::</option>
                 <option value="title">:: 제목순 ::</option>
                 <option value="cnt">:: 조회수 ::</option>
@@ -91,7 +92,7 @@
                 // 변수 - (key : value)
                 list : [],
                 kind : "",
-                order : "num",
+                order : "time",
                 keyword : "", // 검색어
                 searchOption : "all", // 검색 옵션(기본 : 전체)
 

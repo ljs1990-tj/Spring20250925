@@ -36,6 +36,10 @@
                     <td>{{info.userId}}</td>
                 </tr>
                 <tr>
+                    <th>조회수</th>
+                    <td>{{info.cnt}}</td>
+                </tr>
+                <tr>
                     <th>내용</th>
                     <td>{{info.contents}}</td>
                 </tr>
@@ -55,11 +59,11 @@
         <table id="input">
             <th>댓글 입력</th>
             <td>
-                <textarea cols="40" rows="4"></textarea>
+                <textarea cols="40" rows="4" v-model="contents"></textarea>
             </td>
-            <td><button>저장</button></td>
+            <td><button @click="fnCommentAdd">저장</button></td>
         </table>
-
+        <div style="margin-bottom : 500px;"></div>
     </div>
 </body>
 </html>
@@ -71,7 +75,9 @@
                 // 변수 - (key : value)
                 boardNo : "${boardNo}",
                 info : {},
-                commentList : []
+                commentList : [],
+                sessionId : "${sessionId}",
+                contents : ""
             };
         },
         methods: {
@@ -90,6 +96,25 @@
                         console.log(data);
                         self.info = data.info;
                         self.commentList = data.commentList;
+                    }
+                });
+            },
+            fnCommentAdd : function () {
+                let self = this;
+                let param = {
+                    boardNo : self.boardNo,
+                    id : self.sessionId,
+                    contents : self.contents
+                };
+                $.ajax({
+                    url: "/comment/add.dox",
+                    dataType: "json",
+                    type: "POST",
+                    data: param,
+                    success: function (data) {
+                        alert(data.msg);
+                        self.contents = "";
+                        self.fnInfo();
                     }
                 });
             }
