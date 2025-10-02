@@ -116,12 +116,15 @@ public class BoardController {
 				multi.transferTo(file);
 				
 				HashMap<String, Object> map = new HashMap<String, Object>();
-				map.put("filename", saveFileName);
-				map.put("path", "../img/" + saveFileName);
+				map.put("fileName", saveFileName);
+				map.put("path", "/img/" + saveFileName);
 				map.put("boardNo", boardNo);
+				map.put("orgName", originFilename);
+				map.put("size", size);
+				map.put("ext", extName);
 				
 				// insert 쿼리 실행
-			   // testService.addBoardImg(map);
+			   boardService.addBoardImg(map);
 				
 				model.addAttribute("filename", multi.getOriginalFilename());
 				model.addAttribute("uploadPath", file.getAbsolutePath());

@@ -60,6 +60,9 @@ public class BoardService {
 		List<Comment> commentList = boardMapper.selectCommentList(map);
 		resultMap.put("commentList", commentList);
 		
+		List<Board> fileList = boardMapper.selectFileList(map);
+		
+		resultMap.put("fileList", fileList);
 		resultMap.put("info", board);
 		resultMap.put("result", "success");
 		return resultMap;
@@ -84,6 +87,11 @@ public class BoardService {
 		
 		return resultMap;
 		
+	}
+
+	public void addBoardImg(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		int cnt = boardMapper.insertBoardImg(map);
 	}
 	
 	
