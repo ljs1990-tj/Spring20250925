@@ -44,7 +44,7 @@ public class BoardService {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		int cnt = boardMapper.insertBoard(map);
 		
-		
+		resultMap.put("boardNo", map.get("boardNo"));
 		resultMap.put("result", "success");
 		return resultMap;
 		
