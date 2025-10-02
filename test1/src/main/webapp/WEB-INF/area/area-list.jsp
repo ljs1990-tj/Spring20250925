@@ -40,6 +40,7 @@
                 <option value="">:: 전체 ::</option>
                 <option :value="item.si" v-for="item in siList">{{item.si}}</option>
             </select>
+            구 : 
             <select v-model="gu" >
                 <option value="">:: 선택 ::</option>
                 <option :value="item.gu" v-for="item in guList">{{item.gu}}</option>
