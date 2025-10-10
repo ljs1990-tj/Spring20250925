@@ -118,6 +118,20 @@ public class MemberService {
 		
 		return resultMap;
 	}
+	
+	public HashMap<String, Object> removeCnt(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			memberMapeer.cntInit(map);
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+		
+		return resultMap;
+	}
 }
 
 

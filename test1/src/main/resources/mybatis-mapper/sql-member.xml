@@ -21,8 +21,15 @@
 	</insert>
 	
 	<select id="selectMemberList" parameterType="hashmap" resultType="com.example.test1.model.Member">
-		SELECT *
-		FROM TBL_USER
+		SELECT 
+			U.*,
+			DECODE(
+		        BIRTH,
+		        NULL,
+		        '정보없음',
+		        SUBSTR(BIRTH, 3, 2) || '.' || SUBSTR(BIRTH, 5, 2) || '.' || SUBSTR(BIRTH, 7, 2)
+		    ) CBIRTH
+		FROM TBL_USER U
 	</select>
 	
 	<update id="cntIncrease" parameterType="hashmap">
