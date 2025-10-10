@@ -8,6 +8,8 @@ public class Member {
 	private String birth;
 	private String nickName;
 	private String status;
+	private int cnt;
+	private String gender;
 	
 	public String getUserId() {
 		return userId;
@@ -44,5 +46,17 @@ public class Member {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 }
