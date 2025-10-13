@@ -21,7 +21,11 @@
 
             <nav>
                 <ul>
-                    <li class="dropdown">
+                    <li v-for="item in menuList">
+                        <a href="#" v-if="item.depth == 1">{{item.menuName}}</a>
+                    </li>
+
+                    <!-- <li class="dropdown">
                         <a href="#">한식</a>
                         <ul class="dropdown-menu">
                             <li><a href="#">비빔밥</a></li>
@@ -46,12 +50,12 @@
                         </ul>
                     </li>
                     <li><a href="#">디저트</a></li>
-                    <li><a href="#">음료</a></li>
+                    <li><a href="#">음료</a></li> -->
                 </ul>
             </nav>
             <div class="search-bar">
-                <input type="text" placeholder="상품을 검색하세요...">
-                <button>검색</button>
+                <input v-model="keyword" @keyup.enter="fnList" type="text" placeholder="상품을 검색하세요...">
+                <button @click="fnList">검색</button>
             </div>
             <div class="login-btn">
                 <button>로그인</button>
@@ -78,13 +82,17 @@
     const app = Vue.createApp({
         data() {
             return {
-                list : []
+                list : [],
+                menuList : [],
+                keyword : ""
             };
         },
         methods: {
             fnList : function() {
                 var self = this;
-                var nparmap = {};
+                var nparmap = {
+                    keyword : self.keyword
+                };
                 $.ajax({
                     url: "/product/list.dox",
                     dataType: "json",
@@ -93,6 +101,7 @@
                     success: function (data) {
                         console.log(data);
                         self.list = data.list;
+                        self.menuList = data.menuList;
                     }
                 });
             }

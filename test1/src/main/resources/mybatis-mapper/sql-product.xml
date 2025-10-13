@@ -8,8 +8,15 @@
 		SELECT * 
 		FROM TBL_FOOD F
 		INNER JOIN TBL_FOOD_IMG I ON F.FOOD_NO = I.FOOD_NO
+		WHERE 
+			(FOOD_NAME LIKE '%' || #{keyword} || '%'
+			OR FOOD_INFO LIKE '%' || #{keyword} || '%')
 	</select>
 	
+	<select id="selectMenuList" parameterType="hashmap" resultType="com.example.test1.model.Menu">
+		SELECT *
+		FROM TBL_MENU
+	</select>
 </mapper>
 
 
