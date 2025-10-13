@@ -21,7 +21,7 @@
 
             <nav>
                 <ul>
-                    <li v-for="item in menuList">
+                    <li v-for="item in menuList" class="dropdown">
                         <a href="#" v-if="item.depth == 1">{{item.menuName}}</a>
                     </li>
 
