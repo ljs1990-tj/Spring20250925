@@ -61,23 +61,12 @@
         <main>
             <section class="product-list">
                 <!-- 제품 항목 -->
-                <div class="product-item">
-                    <img src="/img/image1.jpg" alt="제품 1">
-                    <h3>비빔밥</h3>
-                    <p>맛있는 한식, 비빔밥!</p>
-                    <p class="price">₩9,900</p>
-                </div>
-                <div class="product-item">
-                    <img src="/img/image2.jpg" alt="제품 2">
-                    <h3>짜장면</h3>
-                    <p>중국의 대표적인 면 요리, 짜장면!</p>
-                    <p class="price">₩7,500</p>
-                </div>
-                <div class="product-item">
-                    <img src="/img/image3.jpg" alt="제품 3">
-                    <h3>피자</h3>
-                    <p>풍부한 치즈가 일품인 피자!</p>
-                    <p class="price">₩12,000</p>
+
+                <div v-for="item in list" class="product-item">
+                    <img :src="item.filePath" alt="제품 1">
+                    <h3>{{item.foodName}}</h3>
+                    <p>{{item.foodInfo}}</p>
+                    <p class="price">₩{{item.price.toLocaleString()}}</p>
                 </div>
 
             </section>
@@ -89,26 +78,28 @@
     const app = Vue.createApp({
         data() {
             return {
-
+                list : []
             };
         },
         methods: {
-            fnLogin() {
+            fnList : function() {
                 var self = this;
                 var nparmap = {};
                 $.ajax({
-                    url: "login.dox",
+                    url: "/product/list.dox",
                     dataType: "json",
                     type: "POST",
                     data: nparmap,
                     success: function (data) {
                         console.log(data);
+                        self.list = data.list;
                     }
                 });
             }
         },
         mounted() {
             var self = this;
+            self.fnList();
         }
     });
     app.mount('#app');
