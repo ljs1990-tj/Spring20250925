@@ -11,11 +11,24 @@
 		WHERE 
 			(FOOD_NAME LIKE '%' || #{keyword} || '%'
 			OR FOOD_INFO LIKE '%' || #{keyword} || '%')
+		<if test="menuNo != null and menuNo != ''">
+			AND F.MENU_NO = #{menuNo}
+		</if>
+		<if test="menuPart != null and menuPart != ''">
+			AND F.MENU_PART = #{menuPart}
+		</if>
+			
+			
 	</select>
 	
 	<select id="selectMenuList" parameterType="hashmap" resultType="com.example.test1.model.Menu">
-		SELECT *
-		FROM TBL_MENU
+		SELECT M.*, NVL(CNT, 0) AS CNT
+		FROM TBL_MENU M
+		LEFT JOIN (
+		    SELECT MENU_PART, COUNT(MENU_PART) AS CNT
+		    FROM TBL_MENU
+		    GROUP BY MENU_PART
+		) T ON M.MENU_NO = T.MENU_PART
 	</select>
 </mapper>
 

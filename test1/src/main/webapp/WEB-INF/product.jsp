@@ -22,35 +22,15 @@
             <nav>
                 <ul>
                     <li v-for="item in menuList" class="dropdown">
-                        <a href="#" v-if="item.depth == 1">{{item.menuName}}</a>
-                    </li>
-
-                    <!-- <li class="dropdown">
-                        <a href="#">한식</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">비빔밥</a></li>
-                            <li><a href="#">김치찌개</a></li>
-                            <li><a href="#">불고기</a></li>
+                        <a href="#" v-if="item.depth == 1" @click="fnList(item.menuNo, '')">{{item.menuName}}</a>
+                        <ul class="dropdown-menu" v-if="item.cnt > 0">
+                            <span v-for="subItem in menuList">
+                                <li v-if="item.menuNo == subItem.menuPart ">
+                                    <a href="#" @click="fnList('', subItem.menuNo)">{{subItem.menuName}}</a>
+                                </li>
+                            </span>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#">중식</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">짜장면</a></li>
-                            <li><a href="#">짬뽕</a></li>
-                            <li><a href="#">마파두부</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#">양식</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">피자</a></li>
-                            <li><a href="#">파스타</a></li>
-                            <li><a href="#">스테이크</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">디저트</a></li>
-                    <li><a href="#">음료</a></li> -->
                 </ul>
             </nav>
             <div class="search-bar">
@@ -88,10 +68,12 @@
             };
         },
         methods: {
-            fnList : function() {
+            fnList : function(part, menuNo) {
                 var self = this;
                 var nparmap = {
-                    keyword : self.keyword
+                    keyword : self.keyword,
+                    menuPart : part,
+                    menuNo : menuNo
                 };
                 $.ajax({
                     url: "/product/list.dox",

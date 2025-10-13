@@ -8,4 +8,5 @@ public class Menu {
 	private String menuName;
 	private int menuPart;
 	private int depth;
+	private int cnt;
 }
