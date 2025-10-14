@@ -81,7 +81,7 @@
             </table>
         </div> 
         <div>
-            <button>제품 등록</button>
+            <button @click="fnAdd">제품 등록</button>
         </div>
     </div>
 </body>
@@ -117,7 +117,52 @@
                         self.menuList = data.menuList;
                     }
                 });
+            },
+            fnAdd : function () {
+                let self = this;
+                let param = {
+                    foodName : self.foodName,
+                    foodInfo : self.foodInfo,
+                    price : self.price,
+                    menuNo : self.menuNo,
+                    menuPart : self.menuPart,
+                };
+                $.ajax({
+                    url: "/product/add.dox",
+                    dataType: "json",
+                    type: "POST",
+                    data: param,
+                    success: function (data) {
+                        if(data.result == "success"){
+                            console.log(data);
+                            var form = new FormData();
+                            form.append( "file1",  $("#file1")[0].files[0] );
+                            form.append( "foodNo",  data.foodNo); 
+                            self.upload(form);  
+
+                            alert("등록되었습니다.");
+                            location.href="/product.do";
+                        } else {
+                            alert("오류가 발생했습니다.");
+                        }
+                    }
+                });
+            },
+
+            upload : function(form){
+                var self = this;
+                $.ajax({
+                    url : "/product/fileUpload.dox"
+                    , type : "POST"
+                    , processData : false
+                    , contentType : false
+                    , data : form
+                    , success:function(data) { 
+                        console.log(data);
+                    }	           
+                });
             }
+
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분

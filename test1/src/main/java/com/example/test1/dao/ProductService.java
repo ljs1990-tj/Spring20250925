@@ -50,5 +50,52 @@ public class ProductService {
 		return resultMap;
 	}
 	
+	public HashMap<String, Object> addFood(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			productMapper.insertFood(map);
+			resultMap.put("foodNo", map.get("foodNo"));
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	public HashMap<String, Object> addFoodImg(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			productMapper.insertFoodImg(map);
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
+	public HashMap<String, Object> getFood(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			Product info = productMapper.selectFood(map);
+			
+			resultMap.put("info", info);
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+		
+		return resultMap;
+	}
 	
 }

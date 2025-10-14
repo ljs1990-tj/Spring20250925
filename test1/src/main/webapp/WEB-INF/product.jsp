@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <title>쇼핑몰 헤더</title>
     <link rel="stylesheet" href="/css/product-style.css">
+    <script src="/js/page-change.js"></script>
 </head>
 
 <body>
@@ -47,10 +48,12 @@
                 <!-- 제품 항목 -->
 
                 <div v-for="item in list" class="product-item">
-                    <img :src="item.filePath" alt="제품 1">
-                    <h3>{{item.foodName}}</h3>
-                    <p>{{item.foodInfo}}</p>
-                    <p class="price">₩{{item.price.toLocaleString()}}</p>
+                    <a href="javascript:;" @click="fnView(item.foodNo)">
+                        <img :src="item.filePath" alt="제품 1">
+                        <h3>{{item.foodName}}</h3>
+                        <p>{{item.foodInfo}}</p>
+                        <p class="price">₩{{item.price.toLocaleString()}}</p>
+                    </a>
                 </div>
 
             </section>
@@ -86,6 +89,9 @@
                         self.menuList = data.menuList;
                     }
                 });
+            },
+            fnView : function(foodNo){
+                pageChange("/product/view.do", {foodNo : foodNo});
             }
         },
         mounted() {
