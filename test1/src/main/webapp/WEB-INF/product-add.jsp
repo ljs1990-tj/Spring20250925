@@ -17,6 +17,9 @@
         th{
             background-color: beige;
         }
+        .txt{
+            width: 270px;
+        }
         
     </style>
 </head>
@@ -29,7 +32,7 @@
                     <th>
                         카테고리
                     </th>
-                    <td>
+                    <td style="text-align: left;">
                         <select>
 
                         </select>
@@ -40,7 +43,7 @@
                         음식명
                     </th>
                     <td>
-                        <input v-mode="foodName">
+                        <input v-mode="foodName" class="txt">
                     </td>
                 </tr>
                 <tr>
@@ -48,7 +51,7 @@
                         음식 설명
                     </th>
                     <td>
-                        <textarea v-mode="foodInfo" cols="25" rows="5"></textarea>
+                        <textarea v-mode="foodInfo" cols="40" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -56,7 +59,7 @@
                         가격
                     </th>
                     <td>
-                        <input v-mode="price">
+                        <input v-mode="price" class="txt">
                     </td>
                 </tr>
                 <tr>
