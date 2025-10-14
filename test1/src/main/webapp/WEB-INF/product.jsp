@@ -34,8 +34,8 @@
                 </ul>
             </nav>
             <div class="search-bar">
-                <input v-model="keyword" @keyup.enter="fnList" type="text" placeholder="상품을 검색하세요...">
-                <button @click="fnList">검색</button>
+                <input v-model="keyword" @keyup.enter="fnList('', '')" type="text" placeholder="상품을 검색하세요...">
+                <button @click="fnList('', '')">검색</button>
             </div>
             <div class="login-btn">
                 <button>로그인</button>
@@ -90,7 +90,7 @@
         },
         mounted() {
             var self = this;
-            self.fnList();
+            self.fnList('', '');
         }
     });
     app.mount('#app');

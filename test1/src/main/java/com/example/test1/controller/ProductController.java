@@ -24,6 +24,11 @@ public class ProductController {
         return "/product";
     }
 	
+	@RequestMapping("/product/add.do") 
+    public String add(Model model) throws Exception{
+        return "/product-add";
+    }
+	
 	@RequestMapping(value = "/product/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String list(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
