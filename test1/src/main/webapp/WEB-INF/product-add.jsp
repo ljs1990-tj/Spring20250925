@@ -33,9 +33,17 @@
                         카테고리
                     </th>
                     <td style="text-align: left;">
-                        <select>
-
+                        <select v-model="menuPart">
+                            <option v-for="item in menuList" :value="item.menuNo">
+                                {{item.menuName}}
+                            </option>
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>제품번호</th>
+                    <td>
+                        <input v-model="menuNo" class="txt">
                     </td>
                 </tr>
                 <tr>
@@ -43,7 +51,7 @@
                         음식명
                     </th>
                     <td>
-                        <input v-mode="foodName" class="txt">
+                        <input v-model="foodName" class="txt">
                     </td>
                 </tr>
                 <tr>
@@ -51,7 +59,7 @@
                         음식 설명
                     </th>
                     <td>
-                        <textarea v-mode="foodInfo" cols="40" rows="5"></textarea>
+                        <textarea v-model="foodInfo" cols="35" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -59,7 +67,7 @@
                         가격
                     </th>
                     <td>
-                        <input v-mode="price" class="txt">
+                        <input v-model="price" class="txt">
                     </td>
                 </tr>
                 <tr>
@@ -72,6 +80,9 @@
                 </tr>
             </table>
         </div> 
+        <div>
+            <button>제품 등록</button>
+        </div>
     </div>
 </body>
 </html>
@@ -81,6 +92,12 @@
         data() {
             return {
                 // 변수 - (key : value)
+                foodName : "",
+                foodInfo : "",
+                price : "",
+                menuNo : "",
+                menuPart : "10",
+                menuList : []
             };
         },
         methods: {
@@ -88,7 +105,7 @@
             fnMenuList : function () {
                 let self = this;
                 let param = {
-
+                    depth : 1
                 };
                 $.ajax({
                     url: "/product/menu.dox",
@@ -96,7 +113,8 @@
                     type: "POST",
                     data: param,
                     success: function (data) {
-
+                        console.log(data);
+                        self.menuList = data.menuList;
                     }
                 });
             }
@@ -104,6 +122,7 @@
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
+            self.fnMenuList();
         }
     });
 

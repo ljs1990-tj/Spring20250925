@@ -29,6 +29,10 @@
 		    FROM TBL_MENU
 		    GROUP BY MENU_PART
 		) T ON M.MENU_NO = T.MENU_PART
+		<if test="depth != null and depth != ''">
+			WHERE DEPTH = #{depth}
+		</if>
+		
 	</select>
 </mapper>
 
