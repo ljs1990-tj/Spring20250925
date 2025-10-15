@@ -18,7 +18,7 @@
 
     <body>
         <div id="app">
-            <select style="margin-bottom : 20px; padding:5px">
+            <select v-model="category" @change="fnSearch" style="margin-bottom : 20px; padding:5px">
                 <option value="">:: 선택 ::</option>
                 <option value="MT1">대형마트</option>
                 <option value="CS2">편의점</option>
@@ -52,7 +52,10 @@
                 return {
                     // 변수 - (key : value)
                     infowindow: null,
-                    map: null
+                    map: null,
+                    ps : null,
+                    category : "",
+                    markerList : []
 
                 };
             },
@@ -74,12 +77,22 @@
                         position: new kakao.maps.LatLng(place.y, place.x)
                     });
 
+                    this.markerList.push(marker);
+                   
                     // 마커에 클릭이벤트를 등록합니다
                     kakao.maps.event.addListener(marker, 'click', function () {
                         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
                         this.infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
                         this.infowindow.open(this.map, marker);
                     });
+                },
+                fnSearch(){
+                    let self = this;
+                    for(let i=0; i<self.markerList.length; i++){
+                        self.markerList[i].setMap(null); // 마커를 지도에서 제거
+                    }
+                    self.markerList = [];
+                    self.ps.categorySearch(self.category, self.placesSearchCB, { useMapBounds: true });
                 }
 
             }, // methods
@@ -99,10 +112,10 @@
                 self.map = new kakao.maps.Map(mapContainer, mapOption);
 
                 // 장소 검색 객체를 생성합니다
-                var ps = new kakao.maps.services.Places(self.map);
+                self.ps = new kakao.maps.services.Places(self.map);
 
                 // 카테고리로 은행을 검색합니다
-                ps.categorySearch('PK6', self.placesSearchCB, { useMapBounds: true });
+                // ps.categorySearch('PK6', self.placesSearchCB, { useMapBounds: true });
 
             }
         });
