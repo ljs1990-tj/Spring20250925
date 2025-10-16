@@ -25,7 +25,22 @@
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
-        {{info}}
+   
+        <div>
+            제품명 : {{info.foodName}}
+        </div>
+        <div>
+            가격 : {{info.price}}
+        </div>
+        <div>
+            정보 : {{info.foodInfo}}
+        </div>
+        <div>
+            개수 : <input v-model="num">
+        </div>
+        <div>
+            <button>주문하기</button>
+        </div>
     </div>
 </body>
 </html>
@@ -36,7 +51,8 @@
             return {
                 // 변수 - (key : value)
                 foodNo : "${foodNo}",
-                info : {}
+                info : {},
+                num : 1
             };
         },
         methods: {

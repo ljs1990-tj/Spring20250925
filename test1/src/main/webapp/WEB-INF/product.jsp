@@ -50,10 +50,11 @@
                 <div v-for="item in list" class="product-item">
                     <a href="javascript:;" @click="fnView(item.foodNo)">
                         <img :src="item.filePath" alt="제품 1">
+                    </a>
                         <h3>{{item.foodName}}</h3>
                         <p>{{item.foodInfo}}</p>
                         <p class="price">₩{{item.price.toLocaleString()}}</p>
-                    </a>
+                    
                 </div>
 
             </section>
