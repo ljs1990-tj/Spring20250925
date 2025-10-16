@@ -51,6 +51,7 @@
             return {
                 // 변수 - (key : value)
                 foodNo : "${foodNo}",
+                sessionId : "${sessionId}",
                 info : {},
                 num : 1
             };
