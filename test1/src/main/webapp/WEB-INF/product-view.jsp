@@ -7,6 +7,7 @@
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <style>
         table, tr, td, th{
             border : 1px solid black;
@@ -39,13 +40,14 @@
             개수 : <input v-model="num">
         </div>
         <div>
-            <button>주문하기</button>
+            <button @click="fnPayment">주문하기</button>
         </div>
     </div>
 </body>
 </html>
 
 <script>
+    IMP.init("imp50081124");
     const app = Vue.createApp({
         data() {
             return {
@@ -73,7 +75,53 @@
                         self.info = data.info;
                     }
                 });
+            },
+            fnPayment : function(){
+                let self = this;
+                IMP.request_pay({
+				    pg: "html5_inicis",
+				    pay_method: "card",
+				    merchant_uid: "merchant_" + new Date().getTime(),
+				    name: self.info.foodName,
+				    amount: 1, // self.info.price * self.num
+				    buyer_tel: "010-0000-0000",
+				  }	, function (rsp) { // callback
+			   	      if (rsp.success) {
+			   	        // 결제 성공 시
+						// alert("성공");
+						console.log(rsp);
+                        self.fnPayHistory(rsp.imp_uid, rsp.paid_amount);
+			   	      } else {
+			   	        // 결제 실패 시
+						alert("실패");
+			   	      }
+		   	  	});
+            },
+            fnPayHistory : function(uid, amount){
+                let self = this;
+                let param = {
+                    foodNo : self.foodNo,
+                    uid : uid,
+                    amount : amount,
+                    userId : self.sessionId
+                };
+                $.ajax({
+                    url: "/product/payment.dox",
+                    dataType: "json",
+                    type: "POST",
+                    data: param,
+                    success: function (data) {
+                        console.log(data);
+                        if(data.result == "success"){
+                            alert("결제되었습니다!");
+                        } else {
+                            alert("오류가 발생했습니다!");
+                        }
+                        
+                    }
+                });
             }
+            
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분

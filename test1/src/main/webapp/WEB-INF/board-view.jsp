@@ -44,7 +44,7 @@
                     <td>
                         <img v-for="item in fileList" :src="item.filePath">
                         <br>
-                        {{info.contents}}
+                        <div v-html="info.contents2"></div>
                     </td>
                 </tr>
             </table>
