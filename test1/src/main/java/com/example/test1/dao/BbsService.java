@@ -60,6 +60,37 @@ public class BbsService {
 		
 		return resultMap;		
 	}
+	
+	public HashMap<String, Object> getBbs(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			Bbs info = bbsMapper.selectBbs(map);
+			resultMap.put("info", info);
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+		
+		
+		return resultMap;		
+	}
+	
+	public HashMap<String, Object> editBbs(HashMap<String, Object> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			bbsMapper.updateBbs(map);
+			resultMap.put("result", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+		
+		
+		return resultMap;		
+	}
 }
 
 

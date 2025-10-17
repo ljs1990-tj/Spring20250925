@@ -7,7 +7,6 @@
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="/js/page-change.js"></script>
     <style>
         table, tr, td, th{
             border : 1px solid black;
@@ -29,34 +28,21 @@
         <div>
             <table>
                 <tr>
-                    <th>선택</th>
-                    <th>번호</th>
                     <th>제목</th>
-                    <th>작성자</th>
-                    <th>조회수</th>
-                    <th>작성일</th>
+                    <td>
+                        <input v-model="title" placeholder="제목">
+                    </td>
                 </tr>
-                <tr v-for="item in list">
+                <tr>
+                    <th>내용</th>
                     <td>
-                        <input type="radio" v-model="selectItem" :value="item.bbsNum">
+                        <textarea v-model="contents" cols="25" rows="5"></textarea>
                     </td>
-                    <td>{{item.bbsNum}}</td>
-                    <td>
-                        <a href="javascript:;" @click="fnView(item.bbsNum)">
-                            <span v-if="item.hit >= 25" style="color:red;">{{item.title}}</span>
-                            <span v-else>{{item.title}}</span>
-                        </a>
-                    </td>
-                    <td>{{item.userId}}</td>
-                    <td>{{item.hit}}</td>
-                    <td>{{item.cdatetime}}</td>
-
                 </tr>
             </table>
         </div>
         <div>
-            <a href="/bbs/add.do"><button>글쓰기</button></a>
-            <button @click="fnRemove">삭제</button>
+            <button @click="fnEdit">수정</button>
         </div>
     </div>
 </body>
@@ -67,56 +53,62 @@
         data() {
             return {
                 // 변수 - (key : value)
-                list : [],
-                selectItem : ""
+                sessionId : "${sessionId}",
+                title : "",
+                contents : "",
+                bbsNum : "${bbsNum}"
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
-            fnList: function () {
-                let self = this;
-                let param = {};
-                $.ajax({
-                    url: "/bbs/list.dox",
-                    dataType: "json",
-                    type: "POST",
-                    data: param,
-                    success: function (data) {
-                        if(data.result == "success"){
-                            self.list = data.list;
-                        }
-                    }
-                });
-            },
-            fnRemove : function(){
+            fnInfo : function () {
                 let self = this;
                 let param = {
-                    selectItem : self.selectItem
+                    bbsNum : self.bbsNum
                 };
                 $.ajax({
-                    url: "/bbs/remove.dox",
+                    url: "/bbs/view.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
                         if(data.result == "success"){
-                            alert("삭제되었습니다!");
-                            self.fnList();
+                            self.title = data.info.title;
+                            self.contents = data.info.contents;
                         } else {
                             alert("오류가 발생했습니다!");
                         }
                     }
                 });
             },
-            fnView : function(bbsNum){
+
+            fnEdit : function () {
                 let self = this;
-                pageChange("/bbs/view.do", {bbsNum : bbsNum});
+                let param = {
+                    bbsNum : self.bbsNum,
+                    title : self.title,
+                    contents : self.contents
+                };
+                $.ajax({
+                    url: "/bbs/edit.dox",
+                    dataType: "json",
+                    type: "POST",
+                    data: param,
+                    success: function (data) {
+                        if(data.result == "success"){
+                            alert("수정되었습니다!");
+                            location.href = "/bbs/list.do";
+                        } else {
+                            alert("오류가 발생했습니다!");
+                        }
+                    }
+                });
             }
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분
             let self = this;
-            self.fnList();
+            self.fnInfo()
         }
     });
 

@@ -17,6 +17,19 @@
 		DELETE FROM TBL_BBS
 		WHERE BBS_NUM = #{selectItem}
 	</delete>
+	
+	<select id="selectBbs" parameterType="hashmap" resultType="com.example.test1.model.Bbs">
+		SELECT *
+		FROM TBL_BBS
+		WHERE BBS_NUM = #{bbsNum}
+	</select>
+	<update id="updateBbs" parameterType="hashmap">
+		UPDATE TBL_BBS
+		SET
+			TITLE = #{title},
+			CONTENTS = #{contents}
+		WHERE BBS_NUM = #{bbsNum}
+	</update>
 </mapper>
 
 

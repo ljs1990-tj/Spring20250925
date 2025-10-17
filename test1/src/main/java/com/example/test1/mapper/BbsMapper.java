@@ -18,5 +18,11 @@ public interface BbsMapper {
 	// 게시글 삭제
 	int deleteBbs(HashMap<String, Object> map);
 	
+	// 게시글 상세 조회
+	Bbs selectBbs(HashMap<String, Object> map);
+	
+	// 게시글 수정
+	int updateBbs(HashMap<String, Object> map);
+	
 	
 }
