@@ -6,7 +6,19 @@
 	<select id="selectBbsList" parameterType="hashmap" resultType="com.example.test1.model.Bbs">
 		SELECT *
 		FROM TBL_BBS
+		WHERE (TITLE LIKE '%' || #{keyword} || '%' 
+				OR USERID LIKE '%' || #{keyword} || '%')
+		OFFSET #{page} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 	</select>
+	
+	<select id="selectBbsListCnt" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*)
+		FROM TBL_BBS
+		WHERE (TITLE LIKE '%' || #{keyword} || '%' 
+				OR USERID LIKE '%' || #{keyword} || '%')
+	</select>
+	
+	
 	<insert id="insertBbs" parameterType="hashmap">
 		INSERT INTO TBL_BBS
 		VALUES(BBS_SEQ.NEXTVAL, #{title}, #{contents}, 0, #{userId}, SYSDATE, SYSDATE) 

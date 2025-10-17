@@ -18,6 +18,9 @@ public class BbsService {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			List<Bbs> list = bbsMapper.selectBbsList(map);
+			int cnt = bbsMapper.selectBbsListCnt(map);
+			
+			resultMap.put("cnt", cnt);
 			resultMap.put("list", list);
 			resultMap.put("result", "success");
 		} catch (Exception e) {

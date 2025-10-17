@@ -12,6 +12,9 @@ public interface BbsMapper {
 	// 게시글 목록
 	List<Bbs> selectBbsList(HashMap<String, Object> map);
 	
+	// 게시글 전체 개수
+	int selectBbsListCnt(HashMap<String, Object> map);
+	
 	// 게시글 삽입
 	int insertBbs(HashMap<String, Object> map);
 	

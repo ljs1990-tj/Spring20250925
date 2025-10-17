@@ -21,11 +21,24 @@
         tr:nth-child(even){
             background-color: azure;
         }
+        .num {
+            margin-right : 5px;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div id="app">
         <!-- html 코드는 id가 app인 태그 안에서 작업 -->
+        <div>
+            <select v-model="pageSize" @change="fnList">
+                <option value="3">3개씩</option>
+                <option value="5">5개씩</option>
+                <option value="10">10개씩</option>
+            </select>
+            검색어 : <input @keyup.enter="fnList" v-model="keyword" placeholder="검색어를 입력해주세요.">
+            <button @click="fnList">검색</button>
+        </div>
         <div>
             <table>
                 <tr>
@@ -53,6 +66,11 @@
 
                 </tr>
             </table>
+            <div>
+                <span v-for="num in index" class="num">
+                    <a href="javascript:;" @click="fnMove(num)">{{num}}</a>
+                </span>
+            </div>
         </div>
         <div>
             <a href="/bbs/add.do"><button>글쓰기</button></a>
@@ -68,14 +86,23 @@
             return {
                 // 변수 - (key : value)
                 list : [],
-                selectItem : ""
+                selectItem : "",
+                keyword : "",
+
+                pageSize : 5, // 한페이지에 출력할 개수
+                page : 1, // 현재 페이지
+                index : 0, // 최대 페이지 값
             };
         },
         methods: {
             // 함수(메소드) - (key : function())
             fnList: function () {
                 let self = this;
-                let param = {};
+                let param = {
+                    keyword : self.keyword,
+                    pageSize : self.pageSize,
+                    page : (self.page-1) * self.pageSize
+                };
                 $.ajax({
                     url: "/bbs/list.dox",
                     dataType: "json",
@@ -84,6 +111,7 @@
                     success: function (data) {
                         if(data.result == "success"){
                             self.list = data.list;
+                            self.index = Math.ceil(data.cnt / self.pageSize);
                         }
                     }
                 });
@@ -101,6 +129,8 @@
                     success: function (data) {
                         if(data.result == "success"){
                             alert("삭제되었습니다!");
+                            self.selectItem = "";
+                            self.page = 1;
                             self.fnList();
                         } else {
                             alert("오류가 발생했습니다!");
@@ -111,6 +141,11 @@
             fnView : function(bbsNum){
                 let self = this;
                 pageChange("/bbs/view.do", {bbsNum : bbsNum});
+            },
+            fnMove : function(num){
+                let self = this;
+                self.page = num;
+                self.fnList();
             }
         }, // methods
         mounted() {
